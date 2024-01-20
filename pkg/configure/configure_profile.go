@@ -34,6 +34,14 @@ func ConfigureProfile(profile string, encryptProfile bool, encryptionPassword st
 	var configurationData ProfileConfigurationData
 	var configuration ProfileConfiguration
 
+	if !encryptProfile {
+		fmt.Println("Username and token will be stored in plaintext. Use --encrypt-profile to encrypt the profile before storing.")
+		_, err := prompt.GetData("Press ENTER to continue or CTRL+C to abort.")
+		if err != nil {
+			return err
+		}
+	}
+
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("Failed to get user's home directory")
@@ -76,7 +84,7 @@ func ConfigureProfile(profile string, encryptProfile bool, encryptionPassword st
 	configurationData.Project = project
 	configurationData.B64Token = *encode.B64Encode(&token)
 
-	if encryptProfile == true {
+	if encryptProfile {
 
 		configuration.Encryption = true
 
@@ -116,6 +124,7 @@ func ConfigureProfile(profile string, encryptProfile bool, encryptionPassword st
 		}
 
 	} else {
+
 		configuration.Encryption = false
 		configuration.ConfigurationData = configurationData
 
