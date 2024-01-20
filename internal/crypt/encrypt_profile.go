@@ -9,7 +9,7 @@ import (
 func EncryptProfile(profileData, encryptionPassword string) (*string, *string, error) {
 
 	// Generate random salt string
-	salt, err := GenerateRandomString(8) // 8 bytes = 64 bits of salt
+	salt, err := GenerateRandomString(config.AESConfig.SaltSize) // 8 bytes = 64 bits of salt
 
 	aesKey, err := GenerateKey(encryptionPassword, salt, config.AESConfig)
 
